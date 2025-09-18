@@ -25,55 +25,55 @@ sudo apt install docker.io
 
 # Comandos Básicos do Docker  
 
-Verificar versão do Docker 
+**Verificar versão do Docker**
 
 ```bash
 docker \--version
 ```
 
-Informações sobre o Docker
+**Informações sobre o Docker**
 
 ```bash
 docker info
 ```
 
-Puxar uma imagem do Docker Hub
+**Puxar uma imagem do Docker Hub**
 
 ```bash
 docker pull nome_da_imagem
 ```
 
-Rodar um container
+**Rodar um container**
 
 ```bash
 docker run nome_da_imagem
 ```
 
-Listar containers em execução
+**Listar containers em execução**
 
 ```bash
 docker ps
 ```
 
-Parar um container
+**Parar um container**
 
 ```bash
 docker stop id_do_container
 ```
 
-Remover um container
+**Remover um container**
 
 ```bash
 docker rm id_do_container
 ```
 
-Listar imagens 
+**Listar imagens**
 
 ```bash 
 docker images
 ```
 
-Remover uma imagem  
+**Remover uma imagem** 
 
 ```bash
 docker rmi nome_da_imagem
@@ -81,45 +81,40 @@ docker rmi nome_da_imagem
 
 # Compreendendo Imagens e Containers  
 
-    - **Imagens**: São como um molde para containers. Elas contêm tudo o
-      > que é necessário para rodar uma aplicação (código, bibliotecas,
-      > dependências, etc.).
+**Imagens**: São como um molde para containers. Elas contêm tudo o que é necessário para rodar uma aplicação (código, bibliotecas, dependências, etc.).
 
-    - **Containers**: São instâncias em execução de uma imagem. Eles são
-      > criados a partir de imagens e podem ser executados, parados,
-      > removidos, etc.
+**Containers**: São instâncias em execução de uma imagem. Eles são criados a partir de imagens e podem ser executados, parados, removidos, etc.
 
-5.  **Dockerfile - Construindo Imagens Personalizadas  
-    > **
+**Dockerfile - Construindo Imagens Personalizadas**
 
 Um Dockerfile é um arquivo de texto com uma lista de instruções para
 criar uma imagem Docker. Exemplo básico:  
   
-Usando uma imagem base
+**Usando uma imagem base**
 
 ```bash 
 FROM ubuntu:20.04
 ```
 
-Instalando dependências
+**Instalando dependências**
 
 ```bash 
 RUN apt-get update && apt-get install -y python3
 ```
 
-Definindo o diretório de trabalho
+**Definindo o diretório de trabalho**
 
 ```bash 
 WORKDIR /app
 ```
 
-Copiando arquivos
+**Copiando arquivos**
 
 ```bash 
 COPY . /app
 ```
 
-Comando para rodar a aplicação
+**Comando para rodar a aplicação**
 
 ```bash
 CMD \[\"python3\", \"app.py\"\]
@@ -128,19 +123,19 @@ CMD \[\"python3\", \"app.py\"\]
 
 # Comando Básico para Construir Imagens  
 
-Para construir uma imagem a partir de um Dockerfile, você pode usar:
+**Para construir uma imagem a partir de um Dockerfile, você pode usar:**
 
 ```bash
 docker build -t nome_da_imagem .
 ```
 
-# Prática
+## Prática
 
 Crie e execute containers simples usando a linha de comando:
 
 1.  Execute o comando docker run hello-world.
 
-Puxe uma imagem do Docker Hub e execute o container: 
+**Puxe uma imagem do Docker Hub e execute o container:** 
 
 ```bash
 docker run -d --name meu_container nginx
@@ -160,13 +155,13 @@ Aprofundar-se em como gerenciar containers e imagens.
 
 ## Visualizando Logs de Containers  
 
-O Docker permite visualizar os logs de containers em execução, o que é útil para depuração e monitoramento. Para ver os logs, use:  
+**O Docker permite visualizar os logs de containers em execução, o que é útil para depuração e monitoramento. Para ver os logs, use:**  
 
 ```bash 
 docker logs \<id_do_container\>
-```bash
+```
 
-Você também pode seguir os logs em tempo real usando:  
+**Você também pode seguir os logs em tempo real usando:**  
 
 ```bash 
 docker logs -f <id_do_container>
@@ -176,7 +171,7 @@ docker logs -f <id_do_container>
 
 **Volumes** são usados para persistir dados fora do ciclo de vida de um container. Isso é importante, pois se um container for removido, seus dados podem ser perdidos.
 
-Para criar e montar um volume em um container, use:  
+**Para criar e montar um volume em um container, use:**  
 
 ```bash  
 docker volume create meu_volume
@@ -184,78 +179,77 @@ docker volume create meu_volume
 docker run -v meu_volume:/dados \<nome_da_imagem\>
 ```
 
-Para listar os volumes existentes:  
+**Para listar os volumes existentes:**  
 
 ```bash
 docker volume ls
 ```
 
-## Trabalhando com Redes no Docker  
+# Trabalhando com Redes no Docker  
 
 O Docker cria uma rede padrão para containers, mas é possível criar redes personalizadas.
 
-Para criar uma nova rede:  
+**Para criar uma nova rede:**  
 
 ```bash
 docker network create minha_rede
 ```
 
-Para rodar um container em uma rede específica:  
+**Para rodar um container em uma rede específica:**  
 
 ```bash
 docker run \--network=minha_rede \<nome_da_imagem\>
 ```
 
-Para listar as redes:  
+**Para listar as redes:**  
 
 ```bash
 docker network ls
 ```
 
-## Criando e Usando Dockerfiles para Personalizar Imagens  
+# Criando e Usando Dockerfiles para Personalizar Imagens  
 
 O Dockerfile permite que você personalize suas imagens, como adicionar pacotes, configurar variáveis de ambiente e definir o comportamento de execução.
 
 Exemplo de Dockerfile mais avançado:  
   
-Usando imagem base do Python
+**Usando imagem base do Python**
 
 ```bash
 FROM python:3.8-slim
 ```
 
-Instalando dependências
+**Instalando dependências**
 
 ```bash
 RUN pip install \--no-cache-dir Flask
 ```
 
-Copiando o código da aplicação
+**Copiando o código da aplicação**
 
 ```bash
 COPY app.py /app.py
 ```
 
-Expondo a porta
+**Expondo a porta**
 
 ```bash
 EXPOSE 5000
 ```
 
-Comando para rodar a aplicação
+**Comando para rodar a aplicação**
 
 ```bash
 CMD \[\"python\", \"app.py\"\]
 ```
 
-## Otimização de Imagens: Layers e Cache  
+# Otimização de Imagens: Layers e Cache  
 
 As imagens Docker são compostas de camadas, cada uma representando uma instrução do Dockerfile. Quando você faz mudanças em uma instrução do Dockerfile, o Docker tenta reutilizar as camadas anteriores que não foram alteradas. Isso ajuda a otimizar o tempo de construção e o armazenamento de imagens.
 
 ## Prática
 
-Crie um **volume** e execute um container que utilize esse volume para
-persistir dados:  
+Crie um **volume** e execute um container que utilize esse volume para persistir dados:  
 
 ```bash
 docker volume create meu_volume
@@ -264,12 +258,11 @@ docker run -v meu_volume:/dados busybox touch /dados/teste.txt
 
 1.  Verifique se o arquivo teste.txt foi criado no volume.
 
-2.  **Crie um Dockerfile** para uma aplicação simples e construa a
-    > imagem a partir dele:
+2.  **Crie um Dockerfile** para uma aplicação simples e construa a imagem a partir dele:
 
 3.   Crie um arquivo Dockerfile com o conteúdo acima.
 
-Construa a imagem:  
+**Construa a imagem:**  
 
 ```bash
 docker build -t minha_imagem .
