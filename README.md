@@ -95,230 +95,209 @@ docker rmi nome_da_imagem
 Um Dockerfile é um arquivo de texto com uma lista de instruções para
 criar uma imagem Docker. Exemplo básico:  
   
-\# Usando uma imagem base
+Usando uma imagem base
 
+```bash 
 FROM ubuntu:20.04
+```
 
-\# Instalando dependências
+Instalando dependências
 
+```bash 
 RUN apt-get update && apt-get install -y python3
+```
 
-\# Definindo o diretório de trabalho
+Definindo o diretório de trabalho
 
+```bash 
 WORKDIR /app
+```
 
-\# Copiando arquivos
+Copiando arquivos
 
+```bash 
 COPY . /app
+```
 
-\# Comando para rodar a aplicação
+Comando para rodar a aplicação
 
+```bash
 CMD \[\"python3\", \"app.py\"\]
-
+```
 - 
 
-6.  **Comando Básico para Construir Imagens  
-    > **
+# Comando Básico para Construir Imagens  
 
-Para construir uma imagem a partir de um Dockerfile, você pode usar:  
-  
+Para construir uma imagem a partir de um Dockerfile, você pode usar:
+
+```bash
 docker build -t nome_da_imagem .
+```
 
-- 
-
-#### **Prática**
+# Prática
 
 Crie e execute containers simples usando a linha de comando:
 
 1.  Execute o comando docker run hello-world.
 
-Puxe uma imagem do Docker Hub e execute o container:  
-  
-docker run -d \--name meu_container nginx
+Puxe uma imagem do Docker Hub e execute o container: 
 
-2.  
+```bash
+docker run -d --name meu_container nginx
+```
 
-3.  Liste os containers em execução com docker ps e pare o container com
-    > docker stop meu_container.
+2.  Liste os containers em execução com docker ps e pare o container com docker stop meu_container.
 
-### **Semana 2: Gerenciamento de Containers e Imagens**
-
-#### **Objetivo**
+# Gerenciamento de Containers e Imagens
 
 Aprofundar-se em como gerenciar containers e imagens.
 
-#### **Tópicos a Cobrir**
+## Diferença entre Containers em Execução e Containers Parados
 
-1.  **Diferença entre Containers em Execução e Containers Parados  
-    > **
+**Containers em Execução**: São containers que estão rodando no momento. Você pode verificar quais containers estão em execução com o comando docker ps.
 
-    - **Containers em Execução**: São containers que estão rodando no
-      > momento. Você pode verificar quais containers estão em execução
-      > com o comando docker ps.
+**Containers Parados**: São containers que foram iniciados, mas não estão em execução no momento. Para listar os containers parados (além dos em execução), use o comando docker ps -a.
 
-    - **Containers Parados**: São containers que foram iniciados, mas
-      > não estão em execução no momento. Para listar os containers
-      > parados (além dos em execução), use o comando docker ps -a.
+## Visualizando Logs de Containers  
 
-2.  **Visualizando Logs de Containers  
-    > **
+O Docker permite visualizar os logs de containers em execução, o que é útil para depuração e monitoramento. Para ver os logs, use:  
 
-O Docker permite visualizar os logs de containers em execução, o que é
-útil para depuração e monitoramento. Para ver os logs, use:  
-  
+```bash 
 docker logs \<id_do_container\>
-
-- 
+```bash
 
 Você também pode seguir os logs em tempo real usando:  
-  
-docker logs -f \<id_do_container\>
 
-- 
+```bash 
+docker logs -f <id_do_container>
+```
 
-3.  **Usando Volumes para Persistência de Dados  
-    > **
+## Usando Volumes para Persistência de Dados  
 
-    - **Volumes** são usados para persistir dados fora do ciclo de vida
-      > de um container. Isso é importante, pois se um container for
-      > removido, seus dados podem ser perdidos.
+**Volumes** são usados para persistir dados fora do ciclo de vida de um container. Isso é importante, pois se um container for removido, seus dados podem ser perdidos.
 
 Para criar e montar um volume em um container, use:  
-  
+
+```bash  
 docker volume create meu_volume
 
 docker run -v meu_volume:/dados \<nome_da_imagem\>
-
-- 
+```
 
 Para listar os volumes existentes:  
-  
+
+```bash
 docker volume ls
+```
 
-- 
+## Trabalhando com Redes no Docker  
 
-4.  **Trabalhando com Redes no Docker  
-    > **
-
-    - O Docker cria uma rede padrão para containers, mas é possível
-      > criar redes personalizadas.
+O Docker cria uma rede padrão para containers, mas é possível criar redes personalizadas.
 
 Para criar uma nova rede:  
-  
-docker network create minha_rede
 
-- 
+```bash
+docker network create minha_rede
+```
 
 Para rodar um container em uma rede específica:  
-  
-docker run \--network=minha_rede \<nome_da_imagem\>
 
-- 
+```bash
+docker run \--network=minha_rede \<nome_da_imagem\>
+```
 
 Para listar as redes:  
-  
+
+```bash
 docker network ls
+```
 
-- 
+## Criando e Usando Dockerfiles para Personalizar Imagens  
 
-5.  **Criando e Usando Dockerfiles para Personalizar Imagens  
-    > **
-
-    - O Dockerfile permite que você personalize suas imagens, como
-      > adicionar pacotes, configurar variáveis de ambiente e definir o
-      > comportamento de execução.
+O Dockerfile permite que você personalize suas imagens, como adicionar pacotes, configurar variáveis de ambiente e definir o comportamento de execução.
 
 Exemplo de Dockerfile mais avançado:  
   
-\# Usando imagem base do Python
+Usando imagem base do Python
 
+```bash
 FROM python:3.8-slim
+```
 
-\# Instalando dependências
+Instalando dependências
 
+```bash
 RUN pip install \--no-cache-dir Flask
+```
 
-\# Copiando o código da aplicação
+Copiando o código da aplicação
 
+```bash
 COPY app.py /app.py
+```
 
-\# Expondo a porta
+Expondo a porta
 
+```bash
 EXPOSE 5000
+```
 
-\# Comando para rodar a aplicação
+Comando para rodar a aplicação
 
+```bash
 CMD \[\"python\", \"app.py\"\]
+```
 
-- 
+## Otimização de Imagens: Layers e Cache  
 
-6.  **Otimização de Imagens: Layers e Cache  
-    > **
+As imagens Docker são compostas de camadas, cada uma representando uma instrução do Dockerfile. Quando você faz mudanças em uma instrução do Dockerfile, o Docker tenta reutilizar as camadas anteriores que não foram alteradas. Isso ajuda a otimizar o tempo de construção e o armazenamento de imagens.
 
-    - As imagens Docker são compostas de camadas, cada uma representando
-      > uma instrução do Dockerfile.
-
-    - Quando você faz mudanças em uma instrução do Dockerfile, o Docker
-      > tenta reutilizar as camadas anteriores que não foram alteradas.
-      > Isso ajuda a otimizar o tempo de construção e o armazenamento de
-      > imagens.
-
-#### **Prática**
+## Prática
 
 Crie um **volume** e execute um container que utilize esse volume para
 persistir dados:  
-  
-docker volume create meu_volume
 
+```bash
+docker volume create meu_volume
 docker run -v meu_volume:/dados busybox touch /dados/teste.txt
+```
 
 1.  Verifique se o arquivo teste.txt foi criado no volume.
 
 2.  **Crie um Dockerfile** para uma aplicação simples e construa a
     > imagem a partir dele:
 
-    1.  Crie um arquivo Dockerfile com o conteúdo acima.
+3.   Crie um arquivo Dockerfile com o conteúdo acima.
 
 Construa a imagem:  
-  
+
+```bash
 docker build -t minha_imagem .
+```
 
-2.  
+4.  Execute um container baseado nessa imagem:
 
-3.  Execute um container baseado nessa imagem:  
-    >   
-    > docker run -d -p 5000:5000 minha_imagem
+```bash
+docker run -d -p 5000:5000 minha_imagem
+```
 
-### **Semana 3: Docker Compose**
-
-#### **Objetivo**
+# Docker Compose
 
 Aprender a orquestrar containers com Docker Compose.
 
-#### **Tópicos a Cobrir**
+O que é Docker Compose e Por que Usá-lo? 
 
-1.  **O que é Docker Compose e Por que Usá-lo?  
-    > **
+**Docker Compose:** é uma ferramenta que permite definir e gerenciar multi-containers Docker. Em vez de iniciar containers individualmente com o comando docker run, você pode usar o Docker Compose para configurar e orquestrar múltiplos containers que fazem parte de uma aplicação.
 
-    - **Docker Compose** é uma ferramenta que permite definir e
-      > gerenciar multi-containers Docker. Em vez de iniciar containers
-      > individualmente com o comando docker run, você pode usar o
-      > Docker Compose para configurar e orquestrar múltiplos containers
-      > que fazem parte de uma aplicação.
+Usando o Docker Compose, você pode definir todos os containers em um único arquivo YAML (docker-compose.yml), facilitando o gerenciamento de dependências, redes e volumes.
 
-    - Usando o Docker Compose, você pode definir todos os containers em
-      > um único arquivo YAML (docker-compose.yml), facilitando o
-      > gerenciamento de dependências, redes e volumes.
+## Estrutura de Arquivo docker-compose.yml  
 
-2.  **Estrutura de Arquivo docker-compose.yml  
-    > **
+O arquivo docker-compose.yml é o coração do Docker Compose. Ele define os containers, suas configurações, redes e volumes.
 
-    - O arquivo docker-compose.yml é o coração do Docker Compose. Ele
-      > define os containers, suas configurações, redes e volumes.
+Exemplo básico de docker-compose.yml para rodar uma aplicação web e um banco de dados: 
 
-Exemplo básico de docker-compose.yml para rodar uma aplicação web e um
-banco de dados:  
-  
+```yaml
 version: \'3\'
 
 services:
@@ -340,50 +319,47 @@ environment:
 POSTGRES_USER: user
 
 POSTGRES_PASSWORD: password
+```
 
-- 
-
-3.  **Comandos Principais do Docker Compose  
-    > **
+## Comandos Principais do Docker Compose
 
 **Subir os containers definidos no docker-compose.yml**:  
-  
-docker-compose up
 
-- 
+ ```bash
+docker-compose up
+```
 
 **Subir os containers em modo detach (em segundo plano)**:  
-  
-docker-compose up -d
 
-- 
+```bash
+docker-compose up -d
+```
 
 **Parar os containers**:  
-  
-docker-compose down
 
-- 
+```bash
+docker-compose down
+```
 
 **Verificar logs dos containers**:  
-  
+
+```bash
 docker-compose logs
+```
 
-- 
+**Recriar os containers (caso haja alterações nos arquivos)**: 
 
-**Recriar os containers (caso haja alterações nos arquivos)**:  
-  
+```bash
 docker-compose up \--build
+```
 
-- 
+**Variáveis de Ambiente em Compose**
 
-4.  **Variáveis de Ambiente em Compose  
-    > **
-
-    - Você pode usar variáveis de ambiente no seu docker-compose.yml
-      > para tornar a configuração mais flexível e segura.
+Você pode usar variáveis de ambiente no seu docker-compose.yml para tornar a configuração mais flexível e segura.
 
 Exemplo de uso de variáveis de ambiente:  
-  
+
+```yaml
 version: \'3\'
 
 services:
@@ -397,20 +373,17 @@ environment:
 POSTGRES_USER: \${DB_USER}
 
 POSTGRES_PASSWORD: \${DB_PASSWORD}
+```
 
-- 
+As variáveis DB_USER e DB_PASSWORD podem ser definidas em um arquivo .env ou como variáveis de ambiente no seu sistema.
 
-- As variáveis DB_USER e DB_PASSWORD podem ser definidas em um arquivo
-  > .env ou como variáveis de ambiente no seu sistema.
+# Prática
 
-#### **Prática**
+Crie um arquivo docker-compose.yml para rodar uma aplicação web simples com banco de dados.
 
-1.  Crie um arquivo docker-compose.yml para rodar uma aplicação web
-    > simples com banco de dados.
+Exemplo para rodar uma aplicação web (usando o nginx) e um banco de dados (PostgreSQL):  
 
-Exemplo para rodar uma aplicação web (usando o nginx) e um banco de
-dados (PostgreSQL):  
-  
+```yaml
 version: \'3\'
 
 services:
@@ -432,75 +405,53 @@ environment:
 POSTGRES_USER: user
 
 POSTGRES_PASSWORD: password
+```
 
-- 
+Use o comando para iniciar os containers: 
 
-Use o comando para iniciar os containers:  
-  
+```bash
 docker-compose up -d
+```  
 
-2.  
-
-3.  Verifique se a aplicação está acessível na URL
-    > [[http://localhost:8080]{.underline}](http://localhost:8080).
+Verifique se a aplicação está acessível na URL [[http://localhost:8080](http://localhost:8080).
 
 Para parar e remover os containers, execute:  
-  
+
+```bash
 docker-compose down
+```
 
-4.  
-
-### **Semana 4: Docker Swarm (Orquestração de Containers)**
-
-#### **Objetivo**
+# Docker Swarm (Orquestração de Containers)
 
 Compreender a orquestração de containers usando Docker Swarm.
 
-#### **Tópicos a Cobrir**
+O que é Docker Swarm? Diferença entre Docker Swarm e Kubernetes
 
-1.  **O que é Docker Swarm? Diferença entre Docker Swarm e Kubernetes  
-    > **
+**Docker Swarm** é uma ferramenta nativa do Docker para orquestração de containers. Ele permite que você agrupe vários hosts Docker em um cluster e execute containers de forma distribuída e escalável.
 
-    - **Docker Swarm** é uma ferramenta nativa do Docker para
-      > orquestração de containers. Ele permite que você agrupe vários
-      > hosts Docker em um cluster e execute containers de forma
-      > distribuída e escalável.
+**Diferença entre Docker Swarm e Kubernetes**: Ambos são ferramentas de orquestração de containers, mas o Kubernetes é mais complexo e oferece mais funcionalidades, enquanto o Docker Swarm é mais simples de configurar e usar, ideal para ambientes menores e para quem já está familiarizado com o Docker.
 
-    - **Diferença entre Docker Swarm e Kubernetes**: Ambos são
-      > ferramentas de orquestração de containers, mas o Kubernetes é
-      > mais complexo e oferece mais funcionalidades, enquanto o Docker
-      > Swarm é mais simples de configurar e usar, ideal para ambientes
-      > menores e para quem já está familiarizado com o Docker.
-
-2.  **Criando um Docker Swarm Cluster  
-    > **
-
-    - Para iniciar um cluster Docker Swarm, você precisa configurar um
-      > **nó gerente** (manager node) e, se necessário, adicionar **nós
-      > trabalhadores** (worker nodes).
+**Criando um Docker Swarm Cluster** Para iniciar um cluster Docker Swarm, você precisa configurar um **nó gerente** (manager node) e, se necessário, adicionar **nós trabalhadores** (worker nodes).
 
 **Inicializar o Swarm** (no nó gerente):  
-  
+
+```bash  
 docker swarm init
+```
 
-- 
+Isso retornará um comando com um token de adesão que você usará para adicionar nós trabalhadores. Exemplo de comando para adicionar um nó trabalhador:  
 
-Isso retornará um comando com um token de adesão que você usará para
-adicionar nós trabalhadores. Exemplo de comando para adicionar um nó
-trabalhador:  
-  
+```bash
 docker swarm join \--token \<token\> \<ip_do_nó_gerente\>:2377
+```
 
-- 
-
-3.  **Comandos Básicos do Docker Swarm  
-    > **
+**Comandos Básicos do Docker Swarm**
 
 **Visualizar o status do Swarm**:  
-  
-docker node ls
 
-- 
+```bash
+docker node ls
+```
 
 **Iniciar um serviço no Swarm**:  
   
@@ -508,142 +459,128 @@ docker service create \--name meu_serviço \--replicas 3 nginx
 
 - 
 
-**Escalonar o número de réplicas de um serviço**:  
-  
-docker service scale meu_serviço=5
+**Escalonar o número de réplicas de um serviço**:
 
-- 
+```bash
+docker service scale meu_serviço=5
+```
 
 **Visualizar serviços em execução**:  
-  
-docker service ls
 
-- 
+```bash
+docker service ls
+```
+
 
 **Verificar os logs de um serviço**:  
-  
-docker service logs meu_serviço
 
-- 
+```bash
+docker service logs meu_serviço
+``` 
 
 **Parar o Swarm**:  
-  
+
+```bash
 docker swarm leave \--force
+```
 
-- 
+**Escalonamento e Gerenciamento de Serviços no Swarm**
 
-4.  **Escalonamento e Gerenciamento de Serviços no Swarm  
-    > **
+O Docker Swarm permite escalonar facilmente os serviços para aumentar ou diminuir a quantidade de réplicas (instâncias de containers) de um serviço.
 
-    - O Docker Swarm permite escalonar facilmente os serviços para
-      > aumentar ou diminuir a quantidade de réplicas (instâncias de
-      > containers) de um serviço.
+Para **escalonar** um serviço para 5 réplicas:
 
-Para **escalonar** um serviço para 5 réplicas:  
-  
+```bash
 docker service scale meu_serviço=5
+```
 
-- 
-
-5.  **Implementando Redes e Volumes no Swarm  
-    > **
-
-    - O Docker Swarm suporta redes e volumes compartilhados entre os nós
-      > do cluster.
+**Implementando Redes e Volumes no Swarm** O Docker Swarm suporta redes e volumes compartilhados entre os nós do cluster.
 
 Para criar uma rede para serviços no Swarm:  
-  
-docker network create \--driver overlay minha_rede
 
-- 
+```bash
+docker network create \--driver overlay minha_rede
+```
 
 Para criar um volume no Swarm:  
-  
+
+```bash
 docker volume create meu_volume
+```
 
-- 
+# Prática
 
-#### **Prática**
-
-1.  **Configuração do Swarm Cluster  
-    > **
+**Configuração do Swarm Cluster**
 
 Inicialize o Docker Swarm no nó principal com:  
-  
+
+```bash
 docker swarm init
+```
 
-- 
+No nó secundário, execute o comando de adesão fornecido pelo nó principal para adicionar o nó trabalhador.
 
-- No nó secundário, execute o comando de adesão fornecido pelo nó
-  > principal para adicionar o nó trabalhador.
-
-2.  **Implantando um Serviço no Swarm  
-    > **
+**Implantando um Serviço no Swarm**
 
 Crie um serviço no Swarm para rodar 3 réplicas do Nginx:  
-  
+
+ ```bash 
 docker service create \--name meu_serviço \--replicas 3 nginx
+```
 
-- 
+Verifique o status do serviço:
 
-Verifique o status do serviço:  
-  
+```bash
 docker service ls
+```
 
-- 
-
-3.  **Escalonando o Serviço  
-    > **
+**Escalonando o Serviço**
 
 Aumente o número de réplicas do serviço para 5:  
-  
+
+```bash
 docker service scale meu_serviço=5
+```
 
-- 
-
-4.  **Verificando as Redes no Swarm  
-    > **
+**Verificando as Redes no Swarm**
 
 Crie uma rede overlay e inicie o serviço com a rede personalizada:  
-  
+
+```bash  
 docker network create \--driver overlay minha_rede
 
 docker service create \--name meu_serviço \--replicas 3 \--network
 minha_rede nginx
+```
 
-- 
+**Removendo o Cluster Swarm**
 
-5.  **Removendo o Cluster Swarm  
-    > **
+Para sair do Swarm em um nó: 
 
-    - Para sair do Swarm em um nó:  
-      >   
-      > docker swarm leave \--force
+```bash
+docker swarm leave \--force
+```
 
-### **Semana 5: Docker em Ambientes de Produção**
-
-#### **Objetivo**
+## Docker em Ambientes de Produção
 
 Preparar containers para ambientes de produção e seguir boas práticas.
 
-#### **Tópicos a Cobrir**
+**Como Otimizar a Performance de Containers**
 
-1.  **Como Otimizar a Performance de Containers  
-    > **
+**Imagens Menores**: Use imagens leves, como as imagens base alpine sempre que possível. Imagens menores reduzem o tempo de download, o uso de armazenamento e aumentam a segurança.
 
-    - **Imagens Menores**: Use imagens leves, como as imagens base
-      > alpine sempre que possível. Imagens menores reduzem o tempo de
-      > download, o uso de armazenamento e aumentam a segurança.
+Exemplo: Ao invés de usar uma imagem do Ubuntu, use
 
-      - Exemplo: Ao invés de usar uma imagem do Ubuntu, use
-        > python:3.8-alpine para aplicações Python.
+```bash
+python:3.8-alpine para aplicações Python.
+```
 
 **Limitar o Uso de Recursos**: Você pode limitar o uso de CPU e memória
-dos containers com as opções \--memory e \--cpus:  
-  
-docker run \--memory=\"512m\" \--cpus=\"1.0\" my_image
+dos containers com as opções \--memory e \--cpus:
 
-- 
+```bash
+docker run \--memory=\"512m\" \--cpus=\"1.0\" my_image
+```bash
 
 - **Usar Docker Compose em Produção**: Docker Compose não é apenas para
   > ambientes de desenvolvimento. Com configurações adequadas, pode ser
