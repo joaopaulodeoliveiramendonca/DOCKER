@@ -580,75 +580,49 @@ dos containers com as opções \--memory e \--cpus:
 
 ```bash
 docker run \--memory=\"512m\" \--cpus=\"1.0\" my_image
-```bash
+```
 
-- **Usar Docker Compose em Produção**: Docker Compose não é apenas para
-  > ambientes de desenvolvimento. Com configurações adequadas, pode ser
-  > usado também para gerenciar containers de produção.
+**Usar Docker Compose em Produção:** Docker Compose não é apenas para ambientes de desenvolvimento. Com configurações adequadas, pode ser usado também para gerenciar containers de produção.
 
-2.  **Monitoramento de Containers  
-    > **
+**Monitoramento de Containers** Para garantir que os containers estão funcionando corretamente em produção, é essencial implementar um sistema de monitoramento. Algumas ferramentas populares para monitoramento de Docker incluem:
 
-    - Para garantir que os containers estão funcionando corretamente em
-      > produção, é essencial implementar um sistema de monitoramento.
-      > Algumas ferramentas populares para monitoramento de Docker
-      > incluem:
+**Prometheus**: Coleta e armazena métricas.
 
-      - **Prometheus**: Coleta e armazena métricas.
+**Grafana**: Visualiza as métricas coletadas pelo Prometheus.
 
-      - **Grafana**: Visualiza as métricas coletadas pelo Prometheus.
+Você pode integrar o Prometheus aos seus containers para coletar métricas de desempenho.
 
-    - Você pode integrar o Prometheus aos seus containers para coletar
-      > métricas de desempenho.
+**Segurança no Docker**
 
-3.  **Segurança no Docker  
-    > **
+**Usar Imagens Oficiais e Confiáveis**: Sempre prefira imagens oficiais, que têm uma maior garantia de segurança.
 
-    - **Usar Imagens Oficiais e Confiáveis**: Sempre prefira imagens
-      > oficiais, que têm uma maior garantia de segurança.
+**Evitar Rodar Containers como Root**: Não execute containers como root, a menos que seja absolutamente necessário. Use o flag USER no Dockerfile para definir um usuário não-root:  
 
-**Evitar Rodar Containers como Root**: Não execute containers como root,
-a menos que seja absolutamente necessário. Use o flag USER no Dockerfile
-para definir um usuário não-root:  
-  
+```bash  
 USER nobody
+``` 
 
-- 
+**Escaneamento de Imagens**: Use ferramentas como o **Clair** ou o **Trivy** para escanear imagens Docker em busca de vulnerabilidades de segurança.
 
-- **Escaneamento de Imagens**: Use ferramentas como o **Clair** ou o
-  > **Trivy** para escanear imagens Docker em busca de vulnerabilidades
-  > de segurança.
+**Limitar o Acesso de Rede**: Use redes Docker personalizadas para restringir o acesso entre containers e a internet, limitando a superfície de ataque.
 
-- **Limitar o Acesso de Rede**: Use redes Docker personalizadas para
-  > restringir o acesso entre containers e a internet, limitando a
-  > superfície de ataque.
+# Deploy de Containers em Servidores
 
-4.  **Deploy de Containers em Servidores  
-    > **
+**Docker em Servidores**: Em um ambiente de produção, você provavelmente estará executando containers em servidores (físicos ou na nuvem). Para fazer deploy, você pode usar ferramentas como:
 
-    - **Docker em Servidores**: Em um ambiente de produção, você
-      > provavelmente estará executando containers em servidores
-      > (físicos ou na nuvem). Para fazer deploy, você pode usar
-      > ferramentas como:
+**Docker Swarm**: Já vimos como configurar um cluster de Swarm.
 
-      - **Docker Swarm**: Já vimos como configurar um cluster de Swarm.
+**Docker Compose**: Para orquestrar múltiplos containers em um único servidor.
 
-      - **Docker Compose**: Para orquestrar múltiplos containers em um
-        > único servidor.
+**Ferramentas de Deploy Automático**: Integrar Docker com ferramentas como **Jenkins**, **GitLab CI** ou **GitHub Actions** permite o deploy automático de containers sempre que o código é atualizado.
 
-    - **Ferramentas de Deploy Automático**: Integrar Docker com
-      > ferramentas como **Jenkins**, **GitLab CI** ou **GitHub
-      > Actions** permite o deploy automático de containers sempre que o
-      > código é atualizado.
+## Prática
 
-#### **Prática**
+**Otimização de Imagens**
 
-1.  **Otimização de Imagens  
-    > **
+Crie uma imagem de aplicação com base na imagem alpine para manter o tamanho da imagem pequeno. Exemplo:  
 
-Crie uma imagem de aplicação com base na imagem alpine para manter o
-tamanho da imagem pequeno. Exemplo:  
-  
+```bash  
 FROM python:3.8-alpine
 
 COPY . /app
@@ -656,36 +630,28 @@ COPY . /app
 RUN pip install -r /app/requirements.txt
 
 CMD \[\"python\", \"/app/app.py\"\]
+```
 
-- 
+Construa e execute o container com a imagem otimizada.
 
-- Construa e execute o container com a imagem otimizada.
+**Monitoramento de Containers**
 
-2.  **Monitoramento de Containers  
-    > **
+Instale o **Prometheus** e **Grafana** em um container para monitorar os recursos dos containers Docker. Use o comando docker stats para visualizar o consumo de recursos dos containers em tempo real.
 
-    - Instale o **Prometheus** e **Grafana** em um container para
-      > monitorar os recursos dos containers Docker.
+**Segurança e Escaneamento**
 
-    - Use o comando docker stats para visualizar o consumo de recursos
-      > dos containers em tempo real.
+Utilize a ferramenta **Trivy** para escanear imagens em busca de vulnerabilidades:  
 
-3.  **Segurança e Escaneamento  
-    > **
-
-Utilize a ferramenta **Trivy** para escanear imagens em busca de
-vulnerabilidades:  
-  
+```bash  
 trivy image my_image
+```
 
-- 
-
-4.  **Deploy em Produção com Docker Compose  
-    > **
+**Deploy em Produção com Docker Compose**
 
 Crie um arquivo docker-compose.yml com múltiplos serviços para rodar em
 um servidor de produção. Exemplo:  
-  
+
+```yaml
 version: \'3\'
 
 services:
@@ -707,46 +673,35 @@ environment:
 POSTGRES_USER: user
 
 POSTGRES_PASSWORD: password
+```
 
-- 
+Faça o deploy com:
 
-- Faça o deploy com docker-compose up -d.
+```bash
+docker-compose up -d.
+```
 
-### **Semana 6: Integração com CI/CD (Integração Contínua e Entrega Contínua)**
-
-#### **Objetivo**
+# Integração com CI/CD (Integração Contínua e Entrega Contínua)**
 
 Entender como integrar Docker com pipelines de CI/CD.
 
-#### **Tópicos a Cobrir**
+**O que é CI/CD e como Docker se Encaixa Nisso**
 
-1.  **O que é CI/CD e como Docker se Encaixa Nisso  
-    > **
+**CI (Integração Contínua)**: Refere-se ao processo de integrar o código de todos os desenvolvedores em um repositório compartilhado várias vezes ao dia. Com isso, as alterações de código podem ser verificadas e testadas automaticamente.
 
-    - **CI (Integração Contínua)**: Refere-se ao processo de integrar o
-      > código de todos os desenvolvedores em um repositório
-      > compartilhado várias vezes ao dia. Com isso, as alterações de
-      > código podem ser verificadas e testadas automaticamente.
+**CD (Entrega Contínua)**: Refere-se à prática de entregar o código de maneira contínua para produção ou para um ambiente de testes. O Docker facilita esse processo, pois permite criar ambientes consistentes em qualquer lugar.
 
-    - **CD (Entrega Contínua)**: Refere-se à prática de entregar o
-      > código de maneira contínua para produção ou para um ambiente de
-      > testes. O Docker facilita esse processo, pois permite criar
-      > ambientes consistentes em qualquer lugar.
+**Como o Docker Ajuda no CI/CD**: Com Docker, você pode garantir que os testes e o deploy sejam feitos em um ambiente idêntico ao de produção. Isso reduz a possibilidade de erros relacionados a diferenças de ambiente.
 
-    - **Como o Docker Ajuda no CI/CD**: Com Docker, você pode garantir
-      > que os testes e o deploy sejam feitos em um ambiente idêntico ao
-      > de produção. Isso reduz a possibilidade de erros relacionados a
-      > diferenças de ambiente.
+**Configurando Pipelines de CI/CD com Docker**
 
-2.  **Configurando Pipelines de CI/CD com Docker  
-    > **
-
-    - **GitHub Actions**: GitHub Actions é uma ferramenta de automação
-      > que permite criar pipelines diretamente dentro do GitHub.
+**GitHub Actions**: GitHub Actions é uma ferramenta de automação que permite criar pipelines diretamente dentro do GitHub.
 
 **Exemplo de Workflow no GitHub Actions**:  
+
 Crie um arquivo .github/workflows/ci.yml:  
-  
+
+```yaml   
 name: CI/CD Pipeline
 
 on:
@@ -786,18 +741,20 @@ docker run my_image pytest tests/
 \- name: Enviar a Imagem para Docker Hub
 
 run: \|
+```
 
+```bash 
 docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD
 
 docker push my_image
-
-- 
+``` 
 
 **GitLab CI**: GitLab CI também tem suporte nativo para Docker. Você
 pode criar um arquivo .gitlab-ci.yml para definir um pipeline:  
   
 stages:
 
+```yaml   
 \- build
 
 \- test
@@ -829,54 +786,43 @@ script:
 \- docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD
 
 \- docker push my_image
+```
 
-- 
+# Testando Containers em um Pipeline CI/CD
 
-3.  **Testando Containers em um Pipeline CI/CD  
-    > **
-
-    - Durante a pipeline, depois de construir a imagem, é possível rodar
-      > testes dentro de um container. Isso garante que a aplicação foi
-      > criada corretamente e funciona conforme esperado.
+Durante a pipeline, depois de construir a imagem, é possível rodar testes dentro de um container. Isso garante que a aplicação foi criada corretamente e funciona conforme esperado.
 
 Exemplo de teste em uma aplicação Python:  
-  
+
+```bash   
 docker run my_image pytest tests/
+```
 
-- 
+**Deploy Automatizado de Containers**
 
-4.  **Deploy Automatizado de Containers  
-    > **
+Após os testes passarem com sucesso, você pode automatizar o deploy da aplicação para produção.
 
-    - Após os testes passarem com sucesso, você pode automatizar o
-      > deploy da aplicação para produção.
-
-No GitHub Actions, por exemplo, você pode fazer o deploy para um
-servidor de produção com Docker. O workflow pode incluir um passo de
-deploy como:  
+No GitHub Actions, por exemplo, você pode fazer o deploy para um servidor de produção com Docker. O workflow pode incluir um passo de deploy como:  
   
-- name: Deploy to Production Server
+name: Deploy to Production Server
 
+```bash 
 run: \|
 
 ssh user@server_ip \"docker pull my_image && docker-compose up -d\"
+```
 
-- 
+## Prática
 
-#### **Prática**
+**Configuração de um Pipeline CI/CD com GitHub Actions**
 
-1.  **Configuração de um Pipeline CI/CD com GitHub Actions  
-    > **
+Crie um repositório no GitHub e adicione um arquivo .github/workflows/ci.yml.
 
-    - Crie um repositório no GitHub e adicione um arquivo
-      > .github/workflows/ci.yml.
+No pipeline, defina as etapas para construir, testar e enviar a imagem para um registry (ex: Docker Hub).
 
-    - No pipeline, defina as etapas para construir, testar e enviar a
-      > imagem para um registry (ex: Docker Hub).
+Exemplo de configuração de GitHub Actions para uma aplicação que utiliza Docker:  
 
-Exemplo de configuração de GitHub Actions para uma aplicação que utiliza
-Docker:  
-  
+```yaml 
 name: Docker CI/CD Pipeline
 
 on:
@@ -912,245 +858,165 @@ docker run my_image pytest tests/
 \- name: Push Docker Image
 
 run: \|
+```
 
+```bash 
 docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD
 
 docker push my_image
+```
 
-- 
+## Testando o Pipeline  
 
-2.  **Testando o Pipeline  
-    > **
+Faça um push para o repositório e verifique se o workflow de CI/CD é executado corretamente.
 
-    - Faça um push para o repositório e verifique se o workflow de CI/CD
-      > é executado corretamente.
+**Automatizando o Deploy**
 
-3.  **Automatizando o Deploy  
-    > **
+Após o build e teste, adicione um estágio de deploy no seu pipeline para enviar a nova imagem para o servidor de produção, como mostrado acima.
 
-    - Após o build e teste, adicione um estágio de deploy no seu
-      > pipeline para enviar a nova imagem para o servidor de produção,
-      > como mostrado acima.
-
-### **Semana 7: Tópicos Avançados e Estratégias de Escalabilidade**
-
-#### **Objetivo**
+# Tópicos Avançados e Estratégias de Escalabilidade
 
 Aprender práticas avançadas para escalar e otimizar containers.
 
-#### **Tópicos a Cobrir**
+**Clusterização e Balanceamento de Carga com Docker Swarm**
 
-1.  **Clusterização e Balanceamento de Carga com Docker Swarm  
-    > **
-
-    - **Escalonamento de Serviços**: Docker Swarm permite que você
-      > escale facilmente os serviços adicionando ou removendo réplicas
-      > de containers em execução. Isso ajuda a garantir alta
-      > disponibilidade e balanceamento de carga.
+**Escalonamento de Serviços**: Docker Swarm permite que você escale facilmente os serviços adicionando ou removendo réplicas de containers em execução. Isso ajuda a garantir alta disponibilidade e balanceamento de carga.
 
 Exemplo para escalar um serviço:  
-  
+
+```bash 
 docker service scale meu_serviço=5
+```
 
-- 
+**Balanceamento de Carga**: O Docker Swarm automaticamente balanceia a carga entre os containers de um serviço, distribuindo o tráfego entre eles. Não é necessário configurar um balanceador de carga externo, pois o próprio Swarm gerencia isso.
 
-<!-- -->
+**Tuning de Performance de Containers e Redes Docker**
 
-- **Balanceamento de Carga**: O Docker Swarm automaticamente balanceia a
-  > carga entre os containers de um serviço, distribuindo o tráfego
-  > entre eles. Não é necessário configurar um balanceador de carga
-  > externo, pois o próprio Swarm gerencia isso.
-
-2.  **Tuning de Performance de Containers e Redes Docker  
-    > **
-
-    - **Memória e CPU**: Você pode alocar mais recursos de CPU e memória
-      > para containers para melhorar a performance.
+**Memória e CPU**: Você pode alocar mais recursos de CPU e memória para containers para melhorar a performance.
 
 Exemplo de comando para limitar recursos:  
-  
+
+```bash 
 docker run \--memory=\"2g\" \--cpus=\"2.0\" my_image
+```
 
-- 
-
-<!-- -->
-
-- **Redes Docker**: Para comunicação eficiente entre containers, use
-  > redes personalizadas. Isso pode melhorar o desempenho, além de
-  > aumentar a segurança.
+**Redes Docker**: Para comunicação eficiente entre containers, use redes personalizadas. Isso pode melhorar o desempenho, além de aumentar a segurança.
 
 Criando uma rede personalizada:  
-  
+
+```bash 
 docker network create \--driver overlay minha_rede
+```
 
-- 
+**Como Utilizar Docker em Grandes Escalas**
 
-3.  **Como Utilizar Docker em Grandes Escalas  
-    > **
+Para ambientes de produção em larga escala, você pode usar o Docker em conjunto com ferramentas como Kubernetes ou Docker Swarm para gerenciar containers distribuídos.
 
-    - Para ambientes de produção em larga escala, você pode usar o
-      > Docker em conjunto com ferramentas como Kubernetes ou Docker
-      > Swarm para gerenciar containers distribuídos.
+**Kubernetes**: Embora o Docker Swarm seja suficiente para orquestrar containers em ambientes menores, o Kubernetes é mais adequado para escalabilidade em larga escala. Ele oferece recursos como auto-escalonamento, gerenciamento de clusters e deploy de containers com alta disponibilidade.
 
-    - **Kubernetes**: Embora o Docker Swarm seja suficiente para
-      > orquestrar containers em ambientes menores, o Kubernetes é mais
-      > adequado para escalabilidade em larga escala. Ele oferece
-      > recursos como auto-escalonamento, gerenciamento de clusters e
-      > deploy de containers com alta disponibilidade.
+**Estratégias de Backup e Recuperação**
 
-4.  **Estratégias de Backup e Recuperação  
-    > **
-
-    - **Backup de Volumes**: Como os volumes Docker são onde você
-      > armazena dados persistentes, é importante fazer backups
-      > regulares.
+**Backup de Volumes**: Como os volumes Docker são onde você armazena dados persistentes, é importante fazer backups regulares.
 
 Para fazer backup de um volume, você pode usar o comando:  
-  
+
+```bash 
 docker run \--rm \--volumes-from meu_container -v \$(pwd):/backup ubuntu
 tar cvf /backup/backup.tar /dados
+```
 
-- 
-
-<!-- -->
-
-- **Backup de Imagens**: É uma boa prática fazer backup das imagens
-  > Docker, especialmente em ambientes de produção.
+**Backup de Imagens**: É uma boa prática fazer backup das imagens Docker, especialmente em ambientes de produção.
 
 Exemplo de comando para salvar uma imagem:  
-  
+
+```bash 
 docker save -o minha_imagem.tar my_image
+```
 
-- 
+**Monitoramento e Logging Avançado**
 
-5.  **Monitoramento e Logging Avançado  
-    > **
+**Monitoramento com Prometheus**: Para grandes ambientes de produção, é importante monitorar os containers de forma eficaz.
 
-    - **Monitoramento com Prometheus**: Para grandes ambientes de
-      > produção, é importante monitorar os containers de forma eficaz.
+**Prometheus** coleta métricas sobre o desempenho dos containers e do sistema. Você pode configurar containers para expor métricas que o Prometheus coleta e envia para um dashboard Grafana.
 
-      - **Prometheus** coleta métricas sobre o desempenho dos containers
-        > e do sistema. Você pode configurar containers para expor
-        > métricas que o Prometheus coleta e envia para um dashboard
-        > Grafana.
+**Centralização de Logs**: Em vez de acessar logs de containers individualmente, use uma solução de centralização de logs, como **ELK Stack (Elasticsearch, Logstash, Kibana)** ou **Fluentd**.
 
-    - **Centralização de Logs**: Em vez de acessar logs de containers
-      > individualmente, use uma solução de centralização de logs, como
-      > **ELK Stack (Elasticsearch, Logstash, Kibana)** ou **Fluentd**.
+Isso permite visualizar e analisar logs de todos os containers em um único lugar.
 
-      - Isso permite visualizar e analisar logs de todos os containers
-        > em um único lugar.
+## Prática
 
-#### **Prática**
+**Escalando um Serviço no Docker Swarm**
 
-1.  **Escalando um Serviço no Docker Swarm  
-    > **
+Crie um cluster Docker Swarm com pelo menos dois nós (gerente e trabalhador).
 
-    - Crie um cluster Docker Swarm com pelo menos dois nós (gerente e
-      > trabalhador).
+Crie um serviço no Swarm e escalone o número de réplicas para 5:
 
-Crie um serviço no Swarm e escalone o número de réplicas para 5:  
-  
+```bash 
 docker service create \--name meu_serviço \--replicas 3 nginx
 
 docker service scale meu_serviço=5
+```
 
-- 
-
-2.  **Configurando Recursos para Containers  
-    > **
+**Configurando Recursos para Containers**
 
 Limite o uso de memória e CPU para um container:  
-  
+
+```bash 
 docker run \--memory=\"2g\" \--cpus=\"1.5\" my_image
+```
 
-- 
+**Criando uma Rede Overlay no Docker**
 
-3.  **Criando uma Rede Overlay no Docker  
-    > **
+Crie uma rede overlay para conectar containers em um cluster Docker Swarm:  
 
-Crie uma rede overlay para conectar containers em um cluster Docker
-Swarm:  
-  
+```bash 
 docker network create \--driver overlay minha_rede
+```
 
-- 
-
-4.  **Backup de Volumes  
-    > **
+**Backup de Volumes**
 
 Faça backup de um volume Docker:  
-  
+
+```bash
 docker run \--rm \--volumes-from meu_container -v \$(pwd):/backup ubuntu
 tar cvf /backup/backup.tar /dados
+```
 
-- 
+**Monitoramento com Prometheus** Configure o **Prometheus** para coletar métricas dos containers. Configure o **Grafana** para visualizar essas métricas.
 
-5.  **Monitoramento com Prometheus  
-    > **
-
-    - Configure o **Prometheus** para coletar métricas dos containers.
-
-    - Configure o **Grafana** para visualizar essas métricas.
-
-### **Semana 8: Revisão e Projetos Práticos**
-
-#### **Objetivo**
+# Revisão e Projetos Práticos
 
 Consolidar o aprendizado com projetos práticos.
 
-#### **Tópicos a Cobrir**
+**Revisão dos Conceitos**
 
-1.  **Revisão dos Conceitos  
-    > **
+Ao longo das semanas anteriores, você aprendeu sobre:
 
-    - Ao longo das semanas anteriores, você aprendeu sobre:
+**Docker e Containers**: Entendeu o conceito de containers, como criar e gerenciar imagens e containers, além de explorar o Docker Compose e o Docker Swarm.
 
-      - **Docker e Containers**: Entendeu o conceito de containers, como
-        > criar e gerenciar imagens e containers, além de explorar o
-        > Docker Compose e o Docker Swarm.
+**Docker Compose**: Viu como orquestrar múltiplos containers e configurar redes e volumes para facilitar o gerenciamento de aplicações complexas.
 
-      - **Docker Compose**: Viu como orquestrar múltiplos containers e
-        > configurar redes e volumes para facilitar o gerenciamento de
-        > aplicações complexas.
+**Docker Swarm**: Aprendeu a criar clusters, escalonar serviços, configurar redes e volumes no Swarm, e compreender a alta disponibilidade e balanceamento de carga.
 
-      - **Docker Swarm**: Aprendeu a criar clusters, escalonar serviços,
-        > configurar redes e volumes no Swarm, e compreender a alta
-        > disponibilidade e balanceamento de carga.
+**Ambientes de Produção e CI/CD**: Entendeu como otimizar imagens, fazer deploy automatizado com Docker e configurar pipelines CI/CD para integração e entrega contínua.
 
-      - **Ambientes de Produção e CI/CD**: Entendeu como otimizar
-        > imagens, fazer deploy automatizado com Docker e configurar
-        > pipelines CI/CD para integração e entrega contínua.
+**Escalabilidade e Monitoramento**: Viu como escalar containers, configurar redes personalizadas, fazer backups, e utilizar ferramentas de monitoramento como Prometheus e Grafana.
 
-      - **Escalabilidade e Monitoramento**: Viu como escalar containers,
-        > configurar redes personalizadas, fazer backups, e utilizar
-        > ferramentas de monitoramento como Prometheus e Grafana.
+**Desenvolvendo um Projeto Completo** A melhor maneira de solidificar os conceitos é criar um projeto do início ao fim, aplicando o que foi aprendido em situações do mundo real.
 
-2.  **Desenvolvendo um Projeto Completo  
-    > **
+**Exemplo de Projeto**: Vamos criar uma aplicação web com frontend e backend, utilizando Docker para empacotar os serviços e Docker Compose para orquestrar o ambiente.
 
-    - A melhor maneira de solidificar os conceitos é criar um projeto do
-      > início ao fim, aplicando o que foi aprendido em situações do
-      > mundo real.
+# Projeto Prático: Aplicação Web com Frontend e Backend
 
-    - **Exemplo de Projeto**: Vamos criar uma aplicação web com frontend
-      > e backend, utilizando Docker para empacotar os serviços e Docker
-      > Compose para orquestrar o ambiente.
+Criar uma aplicação de microserviços com Docker. O backend será em **Node.js** e o frontend será em **React**. Ambos serão containerizados e orquestrados com Docker Compose. O backend se conectará a um banco de dados **PostgreSQL**.
 
-#### **Projeto Prático: Aplicação Web com Frontend e Backend**
+## Passos do Projeto
 
-**Objetivo do Projeto**: Criar uma aplicação de microserviços com
-Docker. O backend será em **Node.js** e o frontend será em **React**.
-Ambos serão containerizados e orquestrados com Docker Compose. O backend
-se conectará a um banco de dados **PostgreSQL**.
+**Criar o Backend em Node.js**
 
-**Passos do Projeto**:
+Crie um diretório backend e inicialize um projeto Node.js. 
 
-1.  **Criar o Backend em Node.js  
-    > **
-
-Crie um diretório backend e inicialize um projeto Node.js.  
-  
+```bash 
 mkdir backend
 
 cd backend
@@ -1158,12 +1024,12 @@ cd backend
 npm init -y
 
 npm install express pg
-
-- 
+```
 
 Crie um arquivo server.js para o servidor Express que conecta ao banco
-de dados PostgreSQL:  
-  
+de dados PostgreSQL:
+
+```javascript
 const express = require(\'express\');
 
 const { Client } = require(\'pg\');
@@ -1211,20 +1077,19 @@ app.listen(port, () =\> {
 console.log(\`Backend running on port \${port}\`);
 
 });
+```
 
-- 
-
-2.  **Criar o Frontend em React  
-    > **
+**Criar o Frontend em React**
 
 Crie o diretório frontend e inicialize um projeto React.  
-  
-npx create-react-app frontend
 
-- 
+```bash 
+npx create-react-app frontend
+```
 
 Modifique o componente App.js para fazer uma requisição ao backend:  
-  
+
+```javascript
 import React, { useState, useEffect } from \'react\';
 
 function App() {
@@ -1254,14 +1119,13 @@ return (
 }
 
 export default App;
+```
 
-- 
-
-3.  **Criar o Dockerfile para o Backend  
-    > **
+**Criar o Dockerfile para o Backend**
 
 Crie um Dockerfile no diretório backend:  
-  
+
+```bash
 FROM node:14
 
 WORKDIR /app
@@ -1273,14 +1137,13 @@ RUN npm install
 EXPOSE 5000
 
 CMD \[\"node\", \"server.js\"\]
+```
 
-- 
-
-4.  **Criar o Dockerfile para o Frontend  
-    > **
+**Criar o Dockerfile para o Frontend**
 
 Crie um Dockerfile no diretório frontend:  
-  
+
+```bash
 FROM node:14
 
 WORKDIR /app
@@ -1294,15 +1157,14 @@ RUN npm run build
 EXPOSE 3000
 
 CMD \[\"serve\", \"-s\", \"build\"\]
+```
 
-- 
-
-5.  **Configuração do Docker Compose  
-    > **
+**Configuração do Docker Compose**
 
 Crie um arquivo docker-compose.yml para orquestrar o frontend, backend e
-o banco de dados:  
-  
+o banco de dados:
+
+```yaml  
 version: \'3\'
 
 services:
@@ -1346,40 +1208,26 @@ volumes:
 volumes:
 
 postgres_data:
+```
 
-- 
-
-6.  **Rodando o Projeto com Docker Compose  
-    > **
+**Rodando o Projeto com Docker Compose **
 
 Na raiz do projeto (onde o docker-compose.yml está localizado),
 execute:  
-  
+
+```bash 
 docker-compose up \--build
+```
 
-- 
+O Docker Compose irá construir as imagens e rodar os containers para o frontend, backend e banco de dados. O backend estará acessível em [http://localhost:5000](http://localhost:5000), e o frontend estará disponível em [http://localhost:3000](http://localhost:3000).
 
-- O Docker Compose irá construir as imagens e rodar os containers para o
-  > frontend, backend e banco de dados. O backend estará acessível em
-  > http://localhost:5000, e o frontend estará disponível em
-  > http://localhost:3000.
+## Conclusão do Projeto
 
-#### **Conclusão do Projeto**
+Após a execução do projeto, você terá uma aplicação funcional com Docker, usando Docker Compose para orquestrar o ambiente de desenvolvimento. Esse tipo de projeto é uma boa prática para solidificar o que você aprendeu e testá-lo em um ambiente mais complexo.
 
-- Após a execução do projeto, você terá uma aplicação funcional com
-  > Docker, usando Docker Compose para orquestrar o ambiente de
-  > desenvolvimento. Esse tipo de projeto é uma boa prática para
-  > solidificar o que você aprendeu e testá-lo em um ambiente mais
-  > complexo.
+## Prática Adicional
 
-#### **Prática Adicional**
+Agora que você tem a base de um projeto, tente adicionar funcionalidades extras como autenticação, comunicação com outras APIs, ou até mesmo configurar um pipeline de CI/CD para o seu projeto com GitHub Actions ou GitLab CI.
 
-- Agora que você tem a base de um projeto, tente adicionar
-  > funcionalidades extras como autenticação, comunicação com outras
-  > APIs, ou até mesmo configurar um pipeline de CI/CD para o seu
-  > projeto com GitHub Actions ou GitLab CI.
-
-Com isso, você tem um plano completo de estudos sobre Docker, abrangendo
-desde os conceitos básicos até práticas avançadas e integração com
-CI/CD, além de um projeto prático para consolidar seu aprendizado.
+Com isso, você tem um plano completo de estudos sobre Docker, abrangendo desde os conceitos básicos até práticas avançadas e integração com CI/CD, além de um projeto prático para consolidar seu aprendizado.
 
