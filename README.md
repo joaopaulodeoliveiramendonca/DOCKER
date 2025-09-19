@@ -28,7 +28,7 @@ sudo apt install docker.io
 **Verificar versão do Docker**
 
 ```bash
-docker \--version
+docker --version
 ```
 
 **Informações sobre o Docker**
@@ -117,7 +117,7 @@ COPY . /app
 **Comando para rodar a aplicação**
 
 ```bash
-CMD \[\"python3\", \"app.py\"\]
+CMD ["python3", "app.py"]
 ```
 - 
 
@@ -158,7 +158,7 @@ Aprofundar-se em como gerenciar containers e imagens.
 **O Docker permite visualizar os logs de containers em execução, o que é útil para depuração e monitoramento. Para ver os logs, use:**  
 
 ```bash 
-docker logs \<id_do_container\>
+docker logs <id_do_container>
 ```
 
 **Você também pode seguir os logs em tempo real usando:**  
@@ -176,7 +176,7 @@ docker logs -f <id_do_container>
 ```bash  
 docker volume create meu_volume
 
-docker run -v meu_volume:/dados \<nome_da_imagem\>
+docker run -v meu_volume:/dados <nome_da_imagem>
 ```
 
 **Para listar os volumes existentes:**  
@@ -198,7 +198,7 @@ docker network create minha_rede
 **Para rodar um container em uma rede específica:**  
 
 ```bash
-docker run \--network=minha_rede \<nome_da_imagem\>
+docker run --network=minha_rede <nome_da_imagem>
 ```
 
 **Para listar as redes:**  
@@ -222,7 +222,7 @@ FROM python:3.8-slim
 **Instalando dependências**
 
 ```bash
-RUN pip install \--no-cache-dir Flask
+RUN pip install --no-cache-dir Flask
 ```
 
 **Copiando o código da aplicação**
@@ -240,7 +240,7 @@ EXPOSE 5000
 **Comando para rodar a aplicação**
 
 ```bash
-CMD \[\"python\", \"app.py\"\]
+CMD ["python", "app.py"]
 ```
 
 # Otimização de Imagens: Layers e Cache  
@@ -291,7 +291,7 @@ O arquivo docker-compose.yml é o coração do Docker Compose. Ele define os con
 Exemplo básico de docker-compose.yml para rodar uma aplicação web e um banco de dados: 
 
 ```yaml
-version: \'3\'
+version: '3'
 
 services:
 
@@ -301,7 +301,7 @@ image: nginx
 
 ports:
 
-\- \"8080:80\"
+- "8080:80"
 
 db:
 
@@ -343,7 +343,7 @@ docker-compose logs
 **Recriar os containers (caso haja alterações nos arquivos)**: 
 
 ```bash
-docker-compose up \--build
+docker-compose up --build
 ```
 
 **Variáveis de Ambiente em Compose**
@@ -353,7 +353,7 @@ Você pode usar variáveis de ambiente no seu docker-compose.yml para tornar a c
 Exemplo de uso de variáveis de ambiente:  
 
 ```yaml
-version: \'3\'
+version: '3'
 
 services:
 
@@ -363,9 +363,9 @@ image: postgres
 
 environment:
 
-POSTGRES_USER: \${DB_USER}
+POSTGRES_USER: ${DB_USER}
 
-POSTGRES_PASSWORD: \${DB_PASSWORD}
+POSTGRES_PASSWORD: ${DB_PASSWORD}
 ```
 
 As variáveis DB_USER e DB_PASSWORD podem ser definidas em um arquivo .env ou como variáveis de ambiente no seu sistema.
@@ -377,7 +377,7 @@ Crie um arquivo docker-compose.yml para rodar uma aplicação web simples com ba
 Exemplo para rodar uma aplicação web (usando o nginx) e um banco de dados (PostgreSQL):  
 
 ```yaml
-version: \'3\'
+version: '3'
 
 services:
 
@@ -387,7 +387,7 @@ image: nginx
 
 ports:
 
-\- \"8080:80\"
+- "8080:80"
 
 db:
 
@@ -435,7 +435,7 @@ docker swarm init
 Isso retornará um comando com um token de adesão que você usará para adicionar nós trabalhadores. Exemplo de comando para adicionar um nó trabalhador:  
 
 ```bash
-docker swarm join \--token \<token\> \<ip_do_nó_gerente\>:2377
+docker swarm join --token <token> <ip_do_nó_gerente>:2377
 ```
 
 **Comandos Básicos do Docker Swarm**
@@ -448,7 +448,7 @@ docker node ls
 
 **Iniciar um serviço no Swarm**:  
   
-docker service create \--name meu_serviço \--replicas 3 nginx
+docker service create --name meu_serviço --replicas 3 nginx
 
 - 
 
@@ -474,7 +474,7 @@ docker service logs meu_serviço
 **Parar o Swarm**:  
 
 ```bash
-docker swarm leave \--force
+docker swarm leave --force
 ```
 
 **Escalonamento e Gerenciamento de Serviços no Swarm**
@@ -492,7 +492,7 @@ docker service scale meu_serviço=5
 Para criar uma rede para serviços no Swarm:  
 
 ```bash
-docker network create \--driver overlay minha_rede
+docker network create --driver overlay minha_rede
 ```
 
 Para criar um volume no Swarm:  
@@ -518,7 +518,7 @@ No nó secundário, execute o comando de adesão fornecido pelo nó principal pa
 Crie um serviço no Swarm para rodar 3 réplicas do Nginx:  
 
  ```bash 
-docker service create \--name meu_serviço \--replicas 3 nginx
+docker service create --name meu_serviço --replicas 3 nginx
 ```
 
 Verifique o status do serviço:
@@ -540,9 +540,9 @@ docker service scale meu_serviço=5
 Crie uma rede overlay e inicie o serviço com a rede personalizada:  
 
 ```bash  
-docker network create \--driver overlay minha_rede
+docker network create --driver overlay minha_rede
 
-docker service create \--name meu_serviço \--replicas 3 \--network
+docker service create --name meu_serviço --replicas 3 --network
 minha_rede nginx
 ```
 
@@ -551,7 +551,7 @@ minha_rede nginx
 Para sair do Swarm em um nó: 
 
 ```bash
-docker swarm leave \--force
+docker swarm leave --force
 ```
 
 ## Docker em Ambientes de Produção
@@ -569,10 +569,10 @@ python:3.8-alpine para aplicações Python.
 ```
 
 **Limitar o Uso de Recursos**: Você pode limitar o uso de CPU e memória
-dos containers com as opções \--memory e \--cpus:
+dos containers com as opções --memory e --cpus:
 
 ```bash
-docker run \--memory=\"512m\" \--cpus=\"1.0\" my_image
+docker run --memory="512m" --cpus="1.0" my_image
 ```
 
 **Usar Docker Compose em Produção:** Docker Compose não é apenas para ambientes de desenvolvimento. Com configurações adequadas, pode ser usado também para gerenciar containers de produção.
@@ -622,7 +622,7 @@ COPY . /app
 
 RUN pip install -r /app/requirements.txt
 
-CMD \[\"python\", \"/app/app.py\"\]
+CMD ["python", "/app/app.py"]
 ```
 
 Construa e execute o container com a imagem otimizada.
@@ -645,7 +645,7 @@ Crie um arquivo docker-compose.yml com múltiplos serviços para rodar em
 um servidor de produção. Exemplo:  
 
 ```yaml
-version: \'3\'
+version: '3'
 
 services:
 
@@ -655,7 +655,7 @@ image: my_web_image
 
 ports:
 
-\- \"80:80\"
+- "80:80"
 
 db:
 
@@ -703,7 +703,7 @@ push:
 
 branches:
 
-\- main
+- main
 
 jobs:
 
@@ -713,31 +713,31 @@ runs-on: ubuntu-latest
 
 steps:
 
-\- uses: actions/checkout@v2
+- uses: actions/checkout@v2
 
-\- name: Configurar Docker Buildx
+- name: Configurar Docker Buildx
 
 uses: docker/setup-buildx-action@v1
 
-\- name: Fazer o Build da Imagem Docker
+- name: Fazer o Build da Imagem Docker
 
-run: \|
+run: |
 
 docker build -t my_image .
 
-\- name: Rodar Testes em Docker
+- name: Rodar Testes em Docker
 
-run: \|
+run: |
 
 docker run my_image pytest tests/
 
-\- name: Enviar a Imagem para Docker Hub
+- name: Enviar a Imagem para Docker Hub
 
-run: \|
+run: |
 ```
 
 ```bash 
-docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD
+docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker push my_image
 ``` 
@@ -748,11 +748,11 @@ pode criar um arquivo .gitlab-ci.yml para definir um pipeline:
 stages:
 
 ```yaml   
-\- build
+- build
 
-\- test
+- test
 
-\- deploy
+- deploy
 
 build:
 
@@ -760,7 +760,7 @@ stage: build
 
 script:
 
-\- docker build -t my_image .
+- docker build -t my_image .
 
 test:
 
@@ -768,7 +768,7 @@ stage: test
 
 script:
 
-\- docker run my_image pytest tests/
+- docker run my_image pytest tests/
 
 deploy:
 
@@ -776,9 +776,9 @@ stage: deploy
 
 script:
 
-\- docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-\- docker push my_image
+- docker push my_image
 ```
 
 # Testando Containers em um Pipeline CI/CD
@@ -800,9 +800,9 @@ No GitHub Actions, por exemplo, você pode fazer o deploy para um servidor de pr
 name: Deploy to Production Server
 
 ```bash 
-run: \|
+run: |
 
-ssh user@server_ip \"docker pull my_image && docker-compose up -d\"
+ssh user@server_ip "docker pull my_image && docker-compose up -d"
 ```
 
 ## Prática
@@ -824,7 +824,7 @@ push:
 
 branches:
 
-\- main
+- main
 
 jobs:
 
@@ -834,27 +834,27 @@ runs-on: ubuntu-latest
 
 steps:
 
-\- uses: actions/checkout@v2
+- uses: actions/checkout@v2
 
-\- name: Build Docker Image
+- name: Build Docker Image
 
-run: \|
+run: |
 
 docker build -t my_image .
 
-\- name: Run Tests
+- name: Run Tests
 
-run: \|
+run: |
 
 docker run my_image pytest tests/
 
-\- name: Push Docker Image
+- name: Push Docker Image
 
-run: \|
+run: |
 ```
 
 ```bash 
-docker login -u \$DOCKER_USERNAME -p \$DOCKER_PASSWORD
+docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 docker push my_image
 ```
@@ -890,7 +890,7 @@ docker service scale meu_serviço=5
 Exemplo de comando para limitar recursos:  
 
 ```bash 
-docker run \--memory=\"2g\" \--cpus=\"2.0\" my_image
+docker run --memory="2g" --cpus="2.0" my_image
 ```
 
 **Redes Docker**: Para comunicação eficiente entre containers, use redes personalizadas. Isso pode melhorar o desempenho, além de aumentar a segurança.
@@ -898,7 +898,7 @@ docker run \--memory=\"2g\" \--cpus=\"2.0\" my_image
 Criando uma rede personalizada:  
 
 ```bash 
-docker network create \--driver overlay minha_rede
+docker network create --driver overlay minha_rede
 ```
 
 **Como Utilizar Docker em Grandes Escalas**
@@ -914,7 +914,7 @@ Para ambientes de produção em larga escala, você pode usar o Docker em conjun
 Para fazer backup de um volume, você pode usar o comando:  
 
 ```bash 
-docker run \--rm \--volumes-from meu_container -v \$(pwd):/backup ubuntu
+docker run --rm --volumes-from meu_container -v $(pwd):/backup ubuntu
 tar cvf /backup/backup.tar /dados
 ```
 
@@ -945,7 +945,7 @@ Crie um cluster Docker Swarm com pelo menos dois nós (gerente e trabalhador).
 Crie um serviço no Swarm e escalone o número de réplicas para 5:
 
 ```bash 
-docker service create \--name meu_serviço \--replicas 3 nginx
+docker service create --name meu_serviço --replicas 3 nginx
 
 docker service scale meu_serviço=5
 ```
@@ -955,7 +955,7 @@ docker service scale meu_serviço=5
 Limite o uso de memória e CPU para um container:  
 
 ```bash 
-docker run \--memory=\"2g\" \--cpus=\"1.5\" my_image
+docker run --memory="2g" --cpus="1.5" my_image
 ```
 
 **Criando uma Rede Overlay no Docker**
@@ -963,7 +963,7 @@ docker run \--memory=\"2g\" \--cpus=\"1.5\" my_image
 Crie uma rede overlay para conectar containers em um cluster Docker Swarm:  
 
 ```bash 
-docker network create \--driver overlay minha_rede
+docker network create --driver overlay minha_rede
 ```
 
 **Backup de Volumes**
@@ -971,7 +971,7 @@ docker network create \--driver overlay minha_rede
 Faça backup de um volume Docker:  
 
 ```bash
-docker run \--rm \--volumes-from meu_container -v \$(pwd):/backup ubuntu
+docker run --rm --volumes-from meu_container -v $(pwd):/backup ubuntu
 tar cvf /backup/backup.tar /dados
 ```
 
@@ -1023,9 +1023,9 @@ Crie um arquivo server.js para o servidor Express que conecta ao banco
 de dados PostgreSQL:
 
 ```javascript
-const express = require(\'express\');
+const express = require('express');
 
-const { Client } = require(\'pg\');
+const { Client } = require('pg');
 
 const app = express();
 
@@ -1033,23 +1033,23 @@ const port = 5000;
 
 const client = new Client({
 
-host: \'db\',
+host: 'db',
 
 port: 5432,
 
-user: \'user\',
+user: 'user',
 
-password: \'password\',
+password: 'password',
 
-database: \'mydb\',
+database: 'mydb',
 
 });
 
 client.connect();
 
-app.get(\'/\', (req, res) =\> {
+app.get('/', (req, res) => {
 
-client.query(\'SELECT NOW()\', (err, result) =\> {
+client.query('SELECT NOW()', (err, result) => {
 
 if (err) {
 
@@ -1057,7 +1057,7 @@ res.send(err);
 
 } else {
 
-res.send(\`Current Time: \${result.rows\[0\].now}\`);
+res.send(`Current Time: ${result.rows[0].now}`);
 
 }
 
@@ -1065,9 +1065,9 @@ res.send(\`Current Time: \${result.rows\[0\].now}\`);
 
 });
 
-app.listen(port, () =\> {
+app.listen(port, () => {
 
-console.log(\`Backend running on port \${port}\`);
+console.log(`Backend running on port ${port}`);
 
 });
 ```
@@ -1083,29 +1083,29 @@ npx create-react-app frontend
 Modifique o componente App.js para fazer uma requisição ao backend:  
 
 ```javascript
-import React, { useState, useEffect } from \'react\';
+import React, { useState, useEffect } from 'react';
 
 function App() {
 
-const \[time, setTime\] = useState(\'\');
+const [time, setTime] = useState('');
 
-useEffect(() =\> {
+useEffect(() => {
 
-fetch(\'http://localhost:5000/\')
+fetch('http://localhost:5000/')
 
-.then((response) =\> response.text())
+.then((response) => response.text())
 
-.then((data) =\> setTime(data));
+.then((data) => setTime(data));
 
-}, \[\]);
+}, []);
 
 return (
 
-\<div\>
+<div>
 
-\<h1\>Current Time: {time}\</h1\>
+<h1>Current Time: {time}</h1>
 
-\</div\>
+</div>
 
 );
 
@@ -1129,7 +1129,7 @@ RUN npm install
 
 EXPOSE 5000
 
-CMD \[\"node\", \"server.js\"\]
+CMD ["node", "server.js"]
 ```
 
 **Criar o Dockerfile para o Frontend**
@@ -1149,7 +1149,7 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD \[\"serve\", \"-s\", \"build\"\]
+CMD ["serve", "-s", "build"]
 ```
 
 **Configuração do Docker Compose**
@@ -1158,7 +1158,7 @@ Crie um arquivo docker-compose.yml para orquestrar o frontend, backend e
 o banco de dados:
 
 ```yaml  
-version: \'3\'
+version: '3'
 
 services:
 
@@ -1168,11 +1168,11 @@ build: ./backend
 
 ports:
 
-\- \"5000:5000\"
+- "5000:5000"
 
 depends_on:
 
-\- db
+- db
 
 frontend:
 
@@ -1180,7 +1180,7 @@ build: ./frontend
 
 ports:
 
-\- \"3000:3000\"
+- "3000:3000"
 
 db:
 
@@ -1196,7 +1196,7 @@ POSTGRES_DB: mydb
 
 volumes:
 
-\- postgres_data:/var/lib/postgresql/data
+- postgres_data:/var/lib/postgresql/data
 
 volumes:
 
@@ -1209,7 +1209,7 @@ Na raiz do projeto (onde o docker-compose.yml está localizado),
 execute:  
 
 ```bash 
-docker-compose up \--build
+docker-compose up --build
 ```
 
 O Docker Compose irá construir as imagens e rodar os containers para o frontend, backend e banco de dados. O backend estará acessível em [http://localhost:5000](http://localhost:5000), e o frontend estará disponível em [http://localhost:3000](http://localhost:3000).
