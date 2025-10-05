@@ -1,4 +1,4 @@
-Documentação do meu aprendizado em Docker, com foco em Containers e Swarm. Do zero ao avançado: fundamentos, criação de containers, orquestração com Docker Swarm, volumes, redes, multi-containers, Docker Compose e práticas recomendadas. Todo código comentado para aprendizado prático.
+Documentação do meu aprendizado em Docker, com foco em **Containers e Swarm**. Do zero ao avançado: fundamentos, criação de containers, orquestração com Docker Swarm, volumes, redes, multi-containers, Docker Compose e práticas recomendadas. Todo código comentado para aprendizado prático.
 
 **Docker:** é uma plataforma de contêineres de código aberto que permite
 criar, distribuir e executar aplicativos de forma consistente e
@@ -447,9 +447,10 @@ docker node ls
 ```
 
 **Iniciar um serviço no Swarm**:  
-  
-docker service create --name meu_serviço --replicas 3 nginx
 
+```bash 
+docker service create --name meu_serviço --replicas 3 nginx
+```
 - 
 
 **Escalonar o número de réplicas de um serviço**:
