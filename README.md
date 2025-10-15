@@ -1,4 +1,24 @@
-Documentação do meu aprendizado em Docker, com foco em **Containers e Swarm**. Do zero ao avançado: fundamentos, criação de containers, orquestração com Docker Swarm, volumes, redes, multi-containers, Docker Compose e práticas recomendadas. Todo código comentado para aprendizado prático.
+# My Docker Learning Documentation — Containers and Swarm
+
+This repository contains my complete documentation on learning **Docker**, with a focus on **Containers and Docker Swarm**.  
+From zero to advanced: fundamentals, container creation, orchestration with Docker Swarm, volumes, networks, multi-container environments, Docker Compose, and best practices.  
+All code is commented for practical learning.
+
+## What You’ll Learn:
+- **Docker Fundamentals**: Understanding what containers are, how they work, and the advantages over traditional virtualization.
+- **Container Creation**: Building, running, and managing containers efficiently.
+- **Docker Images**: Creating custom images using Dockerfiles and managing image versions.
+- **Volumes and Networks**: Persistent data storage and container communication.
+- **Docker Compose**: Managing multi-container applications with `docker-compose.yml`.
+- **Orchestration with Docker Swarm**: Deploying and scaling services using Docker Swarm clusters.
+- **Best Practices**: Security, optimization, and efficient container lifecycle management.
+- **Hands-On Code**: All examples are fully commented to facilitate practical understanding and experimentation.
+
+---
+
+This documentation represents my journey learning **Docker** and its ecosystem, serving both as a personal reference and as a practical guide for others seeking to master containerization and orchestration.
+
+Feel free to explore, learn, and contribute!
 
 **Docker:** é uma plataforma de contêineres de código aberto que permite
 criar, distribuir e executar aplicativos de forma consistente e
